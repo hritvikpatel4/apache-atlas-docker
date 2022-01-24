@@ -1,0 +1,31 @@
+--- AtlasAuthenticationFilter.java	2022-01-14 17:30:00.000000000 +0530
++++ AtlasAuthenticationFilter.java	2022-01-14 17:33:18.000000000 +0530
+@@ -39,7 +39,6 @@
+ import org.apache.hadoop.security.authentication.util.SignerException;
+ import org.apache.hadoop.security.authentication.util.SignerSecretProvider;
+ import org.apache.hadoop.security.authorize.ProxyUsers;
+-import org.apache.log4j.NDC;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ import org.springframework.security.authentication.AbstractAuthenticationToken;
+@@ -731,17 +730,11 @@
+             if (httpRequest.getMethod().equals("OPTIONS")) {
+                 optionsServlet.service(request, response);
+             } else {
+-                try {
+-                    String requestUser = httpRequest.getRemoteUser();
++                String requestUser = httpRequest.getRemoteUser();
+ 
+-                    NDC.push(requestUser + ":" + httpRequest.getMethod() + httpRequest.getRequestURI());
++                LOG.info("Request from authenticated user: {}, URL={}", requestUser, Servlets.getRequestURI(httpRequest));
+ 
+-                    LOG.info("Request from authenticated user: {}, URL={}", requestUser, Servlets.getRequestURI(httpRequest));
+-
+-                    filterChain.doFilter(servletRequest, servletResponse);
+-                } finally {
+-                    NDC.pop();
+-                }
++                filterChain.doFilter(servletRequest, servletResponse);
+             }
+         }
+     }

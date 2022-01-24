@@ -1,0 +1,13 @@
+*.md
+*.orig
+*.iml
+.*
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
+.env
+.gitignore
+.github/
+LICENSE
+docker-compose.yml
