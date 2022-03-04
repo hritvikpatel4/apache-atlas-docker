@@ -34,6 +34,8 @@ LABEL maintainer="Hritvik Patel <hritvik.patel4@gmail.com>"
 
 ENV ATLAS_VERSION 2.2.0
 ENV ATLAS_INSTALL_LOCATION /opt/apache-atlas-$ATLAS_VERSION
+ENV HADOOP_VERSION 2.7.3
+ENV HIVE_VERSION 2.3.6
 
 COPY --from=atlas_compile /tmp/atlas-src/distro/target/apache-atlas-$ATLAS_VERSION-hive-hook.tar.gz /tmp
 COPY --from=atlas_compile /tmp/atlas-src/distro/target/apache-atlas-$ATLAS_VERSION-kafka-hook.tar.gz /tmp
@@ -42,20 +44,37 @@ COPY --from=atlas_compile /tmp/atlas-src/distro/target/apache-atlas-$ATLAS_VERSI
 RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get -y install curl openjdk-8-jdk patch python unzip && \
+    apt-get -y autoclean && \
+    curl -o /tmp/hadoop-$HADOOP_VERSION.tar.gz        https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz && \
+    curl -o /tmp/apache-hive-$HIVE_VERSION-bin.tar.gz https://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
+    tar xzf /tmp/hadoop-$HADOOP_VERSION.tar.gz                  -C /opt && \
+    tar xzf /tmp/apache-hive-$HIVE_VERSION-bin.tar.gz           -C /opt && \
     tar xzf /tmp/apache-atlas-$ATLAS_VERSION-hive-hook.tar.gz   -C /opt && \
     tar xzf /tmp/apache-atlas-$ATLAS_VERSION-kafka-hook.tar.gz  -C /opt && \
     tar xzf /tmp/apache-atlas-$ATLAS_VERSION-server.tar.gz      -C /opt && \
+    mkdir -p /apache-atlas-$ATLAS_VERSION && \
+    cp /tmp/apache-atlas-$ATLAS_VERSION-hive-hook.tar.gz / && \
+    tar xzf apache-atlas-$ATLAS_VERSION-hive-hook.tar.gz -C /apache-atlas-$ATLAS_VERSION --strip 1 && \
+    tar czf apache-atlas-$ATLAS_VERSION.tar.gz apache-atlas-$ATLAS_VERSION && \
     cp -R /opt/apache-atlas-hive-hook-$ATLAS_VERSION/*  $ATLAS_INSTALL_LOCATION && \
     cp -R /opt/apache-atlas-kafka-hook-$ATLAS_VERSION/* $ATLAS_INSTALL_LOCATION && \
     mkdir -p $ATLAS_INSTALL_LOCATION/conf/patches && \
     echo $ATLAS_VERSION > $ATLAS_INSTALL_LOCATION/version.txt && \
+    rm -rf apache-atlas-$ATLAS_VERSION-hive-hook.tar.gz /apache-atlas-$ATLAS_VERSION && \
     rm -rf /opt/apache-atlas-hive-hook-$ATLAS_VERSION /opt/apache-atlas-kafka-hook-$ATLAS_VERSION && \
-    rm -rf /tmp/* && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /tmp/*
+    # rm -rf /var/lib/apt/lists/*
+
+ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
+ENV HADOOP_CONF_DIR $HADOOP_HOME/etc/hadoop
+
+ENV HIVE_HOME /opt/apache-hive-$HIVE_VERSION-bin
+ENV HIVE_CONF_DIR $HIVE_HOME/conf
 
 ENV HBASE_CONF_DIR $ATLAS_INSTALL_LOCATION/conf/hbase
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV PATH $PATH:$JAVA_HOME/bin
+
+ENV PATH $PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HIVE_HOME/bin
 
 COPY patches/* $ATLAS_INSTALL_LOCATION/conf/patches
 COPY conf/* $ATLAS_INSTALL_LOCATION/conf

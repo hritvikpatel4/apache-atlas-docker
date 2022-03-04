@@ -16,12 +16,23 @@ usage(){
 }
 
 start_atlas(){
+    echo "--------------------------------------------------------"
+    echo "-------------------- Starting Atlas --------------------"
+    echo "--------------------------------------------------------"
+
     $ATLAS_HOME/bin/atlas_start.py
     tail -f $ATLAS_HOME/logs/application.log
 }
 
+stop_atlas(){
+    echo "--------------------------------------------------------"
+    echo "-------------------- Stopping Atlas --------------------"
+    echo "--------------------------------------------------------"
+    $ATLAS_HOME/bin/atlas_stop.py
+}
+
 if [ -n "$*" ]; then
-    if [ "$1" = atlas_start ]; then
+    if [ "$1" = cold_start ]; then
         if [[ $* == *--ha* ]]; then
             echo "--------------------------------------------------------"
             echo "-------------------- HA flag passed --------------------"
@@ -55,6 +66,24 @@ if [ -n "$*" ]; then
         echo "--------------------------------------------------------"
         
         start_atlas
+    elif [ "$1" = hot_start ]; then
+        if [[ $* == *--ha* ]]; then
+            echo "--------------------------------------------------------"
+            echo "-------------------- HA flag passed --------------------"
+            echo "--------------------------------------------------------"
+            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_HOME/conf/atlas_HA_conf.patch
+
+            echo "Sleeping for 120 seconds"
+            sleep 120
+            echo "--------------------------------------------------------"
+
+            sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
+            sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
+        fi
+
+        start_atlas
+    elif [ "$1" = stop ]; then
+        stop_atlas
     elif [ "$1" = bash ]; then
         bash
     elif [ "$1" = sh ]; then
