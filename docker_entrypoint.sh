@@ -73,13 +73,19 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_HOME/conf/atlas_HA_conf.patch
 
-            echo "Sleeping for 120 seconds"
-            sleep 120
-            echo "--------------------------------------------------------"
-
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
         fi
+
+        echo "--------------------------------------------------------"
+        echo "Using properties from $ATLAS_PROPERTIES_FILE"
+        echo "--------------------------------------------------------"
+        cat $ATLAS_PROPERTIES_FILE
+        echo "--------------------------------------------------------"
+        
+        echo "Sleeping for 120 seconds"
+        sleep 120
+        echo "--------------------------------------------------------"
 
         start_atlas
     elif [ "$1" = stop ]; then
