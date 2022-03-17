@@ -74,13 +74,17 @@ ENV HIVE_CONF_DIR $HIVE_HOME/conf
 ENV HBASE_CONF_DIR $ATLAS_INSTALL_LOCATION/conf/hbase
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
-ENV PATH $PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HIVE_HOME/bin
-
 COPY patches/* $ATLAS_INSTALL_LOCATION/conf/patches
 COPY conf/* $ATLAS_INSTALL_LOCATION/conf
+COPY atlas_stop /
 COPY docker_entrypoint.sh /
 
+ENV PATH $PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HIVE_HOME/bin
+
 RUN chmod +x /docker_entrypoint.sh
+RUN chmod +x /atlas_stop && mkdir /scripts && mv atlas_stop /scripts
+
+ENV PATH $PATH:/scripts
 
 EXPOSE 21000
 

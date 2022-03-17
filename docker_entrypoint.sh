@@ -24,13 +24,6 @@ start_atlas(){
     tail -f $ATLAS_HOME/logs/application.log
 }
 
-stop_atlas(){
-    echo "--------------------------------------------------------"
-    echo "-------------------- Stopping Atlas --------------------"
-    echo "--------------------------------------------------------"
-    $ATLAS_HOME/bin/atlas_stop.py
-}
-
 if [ -n "$*" ]; then
     if [ "$1" = cold_start ]; then
         if [[ $* == *--ha* ]]; then
@@ -88,8 +81,6 @@ if [ -n "$*" ]; then
         echo "--------------------------------------------------------"
 
         start_atlas
-    elif [ "$1" = stop ]; then
-        stop_atlas
     elif [ "$1" = bash ]; then
         bash
     elif [ "$1" = sh ]; then
