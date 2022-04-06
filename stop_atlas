@@ -3,4 +3,4 @@
 echo "--------------------------------------------------------"
 echo "-------------------- Stopping Atlas --------------------"
 echo "--------------------------------------------------------"
-$ATLAS_HOME/bin/atlas_stop.py
+$ATLAS_INSTALL_LOCATION/bin/atlas_stop.py

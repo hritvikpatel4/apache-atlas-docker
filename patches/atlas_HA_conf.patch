@@ -11,8 +11,8 @@
 -#atlas.server.ids=id1,id2
 +atlas.server.ids=id1,id2
  # For each instance defined above, define the host and port on which Atlas server listens.
--#atlas.server.address.id1=localhost:80
--#atlas.server.address.id2=localhost:80
+-#atlas.server.address.id1=localhost:21000
+-#atlas.server.address.id2=localhost:21000
 +atlas.server.address.id1=SERVER1_ADDR
 +atlas.server.address.id2=SERVER2_ADDR
  # Specify Zookeeper properties needed for HA.

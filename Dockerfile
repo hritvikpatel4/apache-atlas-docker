@@ -76,13 +76,15 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
 COPY patches/* $ATLAS_INSTALL_LOCATION/conf/patches
 COPY conf/* $ATLAS_INSTALL_LOCATION/conf
-COPY atlas_stop /
+COPY stop_atlas /
 COPY docker_entrypoint.sh /
 
 ENV PATH $PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HIVE_HOME/bin
 
-RUN chmod +x /docker_entrypoint.sh
-RUN chmod +x /atlas_stop && mkdir /scripts && mv atlas_stop /scripts
+RUN chmod +x /docker_entrypoint.sh && \
+    chmod +x /stop_atlas && \
+    mkdir /scripts && \
+    mv stop_atlas /scripts
 
 ENV PATH $PATH:/scripts
 

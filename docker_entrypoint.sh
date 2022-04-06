@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
 
 ATLAS_VERSION=2.2.0
-ATLAS_HOME=/opt/apache-atlas-$ATLAS_VERSION
-ATLAS_PROPERTIES_FILE=$ATLAS_HOME/conf/atlas-application.properties
+ATLAS_PROPERTIES_FILE=$ATLAS_INSTALL_LOCATION/conf/atlas-application.properties
 
-sed -i -e "s/HBASE_TABLE/$HBASE_TABLE/" $ATLAS_PROPERTIES_FILE
-sed -i -e "s/ZK_QUORUM/$ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
-sed -i -e "s/KAFKA_BOOTSTRAP_SERVERS/$KAFKA_BOOTSTRAP_SERVERS/" $ATLAS_PROPERTIES_FILE
-sed -i -e "s/HOSTNAME/$HOSTNAME/" $ATLAS_PROPERTIES_FILE
+# sed -i -e "s/HBASE_TABLE/$HBASE_TABLE/" $ATLAS_PROPERTIES_FILE
+# sed -i -e "s/ZK_QUORUM/$ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
+# sed -i -e "s/KAFKA_BOOTSTRAP_SERVERS/$KAFKA_BOOTSTRAP_SERVERS/" $ATLAS_PROPERTIES_FILE
+# sed -i -e "s/HOSTNAME/$HOSTNAME/" $ATLAS_PROPERTIES_FILE
 
 usage(){
-    echo "--------------------------------------------------------"
-    echo "USAGE: must specify one of: atlas_start [--ha], bash, sh"
-    echo "--------------------------------------------------------"
+    echo "-----------------------------------------------------------------"
+    echo "USAGE: must specify one of: cold_start/hot_start [--ha], bash, sh"
+    echo "-----------------------------------------------------------------"
+}
+
+setup_properties(){
+    sed -i -e "s/HBASE_TABLE/$HBASE_TABLE/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/ZK_QUORUM/$ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/KAFKA_BOOTSTRAP_SERVERS/$KAFKA_BOOTSTRAP_SERVERS/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/HOSTNAME/$HOSTNAME/" $ATLAS_PROPERTIES_FILE
 }
 
 start_atlas(){
@@ -20,8 +26,8 @@ start_atlas(){
     echo "-------------------- Starting Atlas --------------------"
     echo "--------------------------------------------------------"
 
-    $ATLAS_HOME/bin/atlas_start.py
-    tail -f $ATLAS_HOME/logs/application.log
+    $ATLAS_INSTALL_LOCATION/bin/atlas_start.py
+    tail -f $ATLAS_INSTALL_LOCATION/logs/application.log
 }
 
 if [ -n "$*" ]; then
@@ -30,11 +36,13 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             echo "-------------------- HA flag passed --------------------"
             echo "--------------------------------------------------------"
-            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_HOME/conf/atlas_HA_conf.patch
+            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/atlas_HA_conf.patch
 
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
         fi
+
+        setup_properties
 
         echo "--------------------------------------------------------"
         echo "Using properties from $ATLAS_PROPERTIES_FILE"
@@ -64,11 +72,13 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             echo "-------------------- HA flag passed --------------------"
             echo "--------------------------------------------------------"
-            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_HOME/conf/atlas_HA_conf.patch
+            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/atlas_HA_conf.patch
 
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
         fi
+
+        setup_properties
 
         echo "--------------------------------------------------------"
         echo "Using properties from $ATLAS_PROPERTIES_FILE"
