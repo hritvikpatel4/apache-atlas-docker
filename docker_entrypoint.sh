@@ -26,7 +26,8 @@ start_atlas(){
     echo "-------------------- Starting Atlas --------------------"
     echo "--------------------------------------------------------"
 
-    $ATLAS_INSTALL_LOCATION/bin/atlas_start.py
+    $ATLAS_INSTALL_LOCATION/bin/atlas_start.py &
+    sleep 30
     tail -f $ATLAS_INSTALL_LOCATION/logs/application.log
 }
 

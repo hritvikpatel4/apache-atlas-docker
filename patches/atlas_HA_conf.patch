@@ -1,5 +1,5 @@
---- conf/atlas-application.properties	2022-01-16 19:00:00.000000000 +0530
-+++ conf/atlas-application.properties	2022-01-16 19:15:16.000000000 +0530
+--- atlas-application.properties	2022-01-16 19:00:00.000000000 +0530
++++ atlas-application.properties	2022-01-16 19:15:16.000000000 +0530
 @@ -215,30 +215,30 @@
  atlas.audit.hbase.zookeeper.quorum=ZK_QUORUM
  
