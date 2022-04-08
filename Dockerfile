@@ -20,9 +20,11 @@ RUN cd /tmp/atlas-src && \
     patch -u -b pom.xml -i log4j.patch && \
     patch -u -b webapp/src/main/java/org/apache/atlas/web/filters/AtlasAuthenticationFilter.java -i deprecateNDC.patch && \
     patch -u -b dashboardv2/public/js/views/graph/LineageLayoutView.js -i customize_lineage_table.patch && \
+    patch -u -b addons/hive-bridge/src/main/java/org/apache/atlas/hive/bridge/HiveMetaStoreBridge.java -i hive_2_X_X_support.patch && \
     rm log4j.patch && \
     rm deprecateNDC.patch && \
     rm customize_lineage_table.patch && \
+    rm hive_2_X_X_support.patch && \
     sed -i "s/http:\/\/repo1.maven.org\/maven2/https:\/\/repo1.maven.org\/maven2/g" pom.xml && \
     export MAVEN_OPTS="-Xms2g -Xmx4g" && \
     mvn clean -Dhttps.protocols=TLSv1.2 package -Pdist
@@ -45,7 +47,7 @@ COPY --from=atlas_compile /tmp/atlas-src/distro/target/apache-atlas-$ATLAS_VERSI
 
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y install curl openjdk-8-jdk patch python unzip && \
+    apt-get -y install curl openjdk-8-jdk patch python unzip iputils-ping && \
     apt-get -y autoclean && \
     curl -o /tmp/hadoop-$HADOOP_VERSION.tar.gz        https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz && \
     curl -o /tmp/apache-hive-$HIVE_VERSION-bin.tar.gz https://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \

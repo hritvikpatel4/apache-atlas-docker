@@ -26,8 +26,8 @@ start_atlas(){
     echo "-------------------- Starting Atlas --------------------"
     echo "--------------------------------------------------------"
 
-    $ATLAS_INSTALL_LOCATION/bin/atlas_start.py &
-    sleep 30
+    $ATLAS_INSTALL_LOCATION/bin/atlas_start.py
+    sleep 45
     tail -f $ATLAS_INSTALL_LOCATION/logs/application.log
 }
 
@@ -51,8 +51,8 @@ if [ -n "$*" ]; then
         cat $ATLAS_PROPERTIES_FILE
         echo "--------------------------------------------------------"
         
-        echo "Sleeping for 120 seconds"
-        sleep 120
+        echo "Sleeping for 90 seconds"
+        sleep 90
         echo "--------------------------------------------------------"
         
         echo "Creating vertex_index in Solr"
@@ -87,8 +87,8 @@ if [ -n "$*" ]; then
         cat $ATLAS_PROPERTIES_FILE
         echo "--------------------------------------------------------"
         
-        echo "Sleeping for 120 seconds"
-        sleep 120
+        echo "Sleeping for 90 seconds"
+        sleep 90
         echo "--------------------------------------------------------"
 
         start_atlas
