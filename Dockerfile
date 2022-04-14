@@ -19,12 +19,9 @@ COPY patches/* /tmp/atlas-src
 RUN cd /tmp/atlas-src && \
     patch -u -b pom.xml -i log4j.patch && \
     patch -u -b webapp/src/main/java/org/apache/atlas/web/filters/AtlasAuthenticationFilter.java -i deprecateNDC.patch && \
-    patch -u -b dashboardv2/public/js/views/graph/LineageLayoutView.js -i customize_lineage_table.patch && \
+    patch -u -b dashboardv2/public/js/views/graph/LineageLayoutView.js -i 0001_customize_lineage_table.patch && \
+    patch -u -b dashboardv2/public/js/views/graph/LineageLayoutView.js -i 0002_customize_lineage_table.patch && \
     patch -u -b addons/hive-bridge/src/main/java/org/apache/atlas/hive/bridge/HiveMetaStoreBridge.java -i hive_2_X_X_support.patch && \
-    rm log4j.patch && \
-    rm deprecateNDC.patch && \
-    rm customize_lineage_table.patch && \
-    rm hive_2_X_X_support.patch && \
     sed -i "s/http:\/\/repo1.maven.org\/maven2/https:\/\/repo1.maven.org\/maven2/g" pom.xml && \
     export MAVEN_OPTS="-Xms2g -Xmx4g" && \
     mvn clean -Dhttps.protocols=TLSv1.2 package -Pdist

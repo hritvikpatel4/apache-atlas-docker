@@ -1,0 +1,28 @@
+--- LineageLayoutView.js
++++ LineageLayoutView.js
+@@ -430,7 +430,10 @@ define(['require',
+                     createTime: 'createTime',
+                     status: 'status',
+                     classificationNames: 'classifications',
+-                    meanings: 'term'
++                    meanings: 'term' ,
++                    data : 'data' ,
++                    sla_flag : 'sla_flag',
++                    sla_minutes : 'sla_minutes'
+                 };
+                 var data = {};
+                 _.each(config, function(valKey, key) {
+@@ -439,7 +442,13 @@ define(['require',
+                         val = initialData.attributes[key];
+                     }
+                     if (val) {
++                        if(key.match('data')) {
++                            data['starttime']=new Date(parseInt(val[0]['attributes']['starttime'])).toGMTString()
++                            data['endtime']=new Date(parseInt(val[0]['attributes']['endtime'])).toGMTString()
++                        }
++                        else {
+                         data[valKey] = val;
++                        }
+                     }
+                 });
+                 this.ui.nodeDetailTable.html(CommonViewFunction.propertyTable({
