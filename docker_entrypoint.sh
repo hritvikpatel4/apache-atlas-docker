@@ -16,7 +16,9 @@ usage(){
 
 setup_properties(){
     sed -i -e "s/HBASE_TABLE/$HBASE_TABLE/" $ATLAS_PROPERTIES_FILE
-    sed -i -e "s/ZK_QUORUM/$ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/HBASE_ZK_QUORUM/$HBASE_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/SOLR_ZK_QUORUM/$SOLR_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
+    sed -i -e "s/KAFKA_ZK_QUORUM/$KAFKA_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
     sed -i -e "s/KAFKA_BOOTSTRAP_SERVERS/$KAFKA_BOOTSTRAP_SERVERS/" $ATLAS_PROPERTIES_FILE
     sed -i -e "s/HOSTNAME/$HOSTNAME/" $ATLAS_PROPERTIES_FILE
 }
@@ -103,4 +105,5 @@ else
     usage
 fi
 
+tail -f /dev/null
 wait || :
