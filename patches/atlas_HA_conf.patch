@@ -1,7 +1,7 @@
---- atlas-application.properties	2022-01-16 19:00:00.000000000 +0530
-+++ atlas-application.properties	2022-01-16 19:15:16.000000000 +0530
-@@ -215,30 +215,30 @@
- atlas.audit.hbase.zookeeper.quorum=ZK_QUORUM
+--- conf/atlas-application.properties	2022-04-25 13:33:07.000000000 +0530
++++ conf/atlas-application_with_HA.properties	2022-05-24 18:03:20.000000000 +0530
+@@ -219,30 +219,30 @@
+ atlas.audit.hbase.zookeeper.quorum=HBASE_ZK_QUORUM
  
  #########  High Availability Configuration ########
 -atlas.server.ha.enabled=false
@@ -18,7 +18,7 @@
  # Specify Zookeeper properties needed for HA.
  # Specify the list of services running Zookeeper servers as a comma separated list.
 -#atlas.server.ha.zookeeper.connect=ZK_QUORUM
-+atlas.server.ha.zookeeper.connect=ZK_QUORUM
++atlas.server.ha.zookeeper.connect=ATLAS_ZK_QUORUM
  # Specify how many times should connection try to be established with a Zookeeper cluster, in case of any connection issues.
 -#atlas.server.ha.zookeeper.num.retries=3
 +atlas.server.ha.zookeeper.num.retries=5
