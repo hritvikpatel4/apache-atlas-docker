@@ -39,7 +39,7 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             echo "-------------------- HA flag passed --------------------"
             echo "--------------------------------------------------------"
-            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/atlas_HA_conf.patch
+            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/patches/atlas_HA_conf.patch
 
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
@@ -75,7 +75,7 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             echo "-------------------- HA flag passed --------------------"
             echo "--------------------------------------------------------"
-            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/atlas_HA_conf.patch
+            patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/patches/atlas_HA_conf.patch
 
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
