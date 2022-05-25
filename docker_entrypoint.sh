@@ -41,6 +41,7 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/patches/atlas_HA_conf.patch
 
+            sed -i -e "s/ATLAS_ZK_QUORUM/$ATLAS_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
         fi
@@ -77,6 +78,7 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/patches/atlas_HA_conf.patch
 
+            sed -i -e "s/ATLAS_ZK_QUORUM/$ATLAS_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
         fi
