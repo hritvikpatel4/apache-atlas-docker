@@ -32,7 +32,11 @@ start_atlas(){
     echo "--------------------------------------------------------"
 
     $ATLAS_INSTALL_LOCATION/bin/atlas_start.py
-    sleep 45
+
+    echo "Sleeping for 120 seconds"
+    sleep 120
+    echo "--------------------------------------------------------"
+    
     tail -f $ATLAS_INSTALL_LOCATION/logs/application.log
 }
 
@@ -58,9 +62,13 @@ if [ -n "$*" ]; then
             echo "--------------------------------------------------------"
             patch -u -b $ATLAS_PROPERTIES_FILE -i $ATLAS_INSTALL_LOCATION/conf/patches/atlas_HA_conf.patch
 
+            LOCALHOST_NAME="$(hostname):21000"
+
             sed -i -e "s/ATLAS_ZK_QUORUM/$ATLAS_ZK_QUORUM/" $ATLAS_PROPERTIES_FILE
-            sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
-            sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
+            # sed -i -e "s/SERVER1_ADDR/$SERVER1_ADDR/" $ATLAS_PROPERTIES_FILE
+            sed -i -e "s/SERVER1_ADDR/$LOCALHOST_NAME/" $ATLAS_PROPERTIES_FILE
+            # sed -i -e "s/SERVER2_ADDR/$SERVER2_ADDR/" $ATLAS_PROPERTIES_FILE
+            sed -i -e "s/SERVER2_ADDR/$SERVER_ADDR/" $ATLAS_PROPERTIES_FILE
 
             sed -i -e "s/HA_ZOOKEEPER_RETRY_SLEEPTIME/$HA_ZOOKEEPER_RETRY_SLEEPTIME/" $ATLAS_PROPERTIES_FILE
             sed -i -e "s/HA_ZOOKEEPER_SESSION_TIMEOUT/$HA_ZOOKEEPER_SESSION_TIMEOUT/" $ATLAS_PROPERTIES_FILE

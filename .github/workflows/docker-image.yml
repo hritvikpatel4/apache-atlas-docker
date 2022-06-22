@@ -32,10 +32,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
+      # Setup log size to be 2 GiB
       - name: Docker Setup Buildx
         uses: docker/setup-buildx-action@v2
         with:
-          driver-opts: env.BUILDKIT_STEP_LOG_MAX_SIZE=1073741824
+          driver-opts: env.BUILDKIT_STEP_LOG_MAX_SIZE=2147483648
         
       # - name: Log in to Docker Hub
       #   if: github.event_name != 'pull_request'
